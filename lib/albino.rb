@@ -101,9 +101,12 @@ class Albino
   alias_method :to_s, :colorize
 
   def convert_options(options = {})
+    options[:g] &&= ''          # Guess the lexer from the content
     @options.merge(options).inject([]) do |memo, (flag, value)|
       validate_shell_args(flag.to_s, value.to_s)
-      memo << "-#{flag}" << value.to_s
+      memo << "-#{flag}"
+      memo << value.to_s unless value.empty?
+      memo
     end
   end
 
@@ -121,7 +124,7 @@ class Albino
     if flag !~ /^[a-z]+$/i
       raise ShellArgumentError, "Flag is invalid: #{flag.inspect}"
     end
-    if value !~ /^[a-z0-9\-\_\+\=\#\,\s]+$/i
+    if flag != 'g' && value !~ /^[a-z0-9\-\_\+\=\#\,\s]+$/i
       raise ShellArgumentError, "Flag value is invalid: -#{flag} #{value.inspect}"
     end
   end

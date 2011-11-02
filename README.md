@@ -22,6 +22,10 @@ For this and other extractions, see [http://github.com/github]()
     @syntaxer = Albino.new(File.new('albino.rb'), :ruby, :bbcode)
     puts @syntaxer.colorize
 
+    # Guess the lexer from the input content
+    @syntaxer = Albino.new(File.new('albino.rb'))
+    puts @syntaxer.colorize(:g => true)
+
 ### Multi
 
     require 'albino/multi'
